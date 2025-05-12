@@ -139,7 +139,7 @@
 % Comment the above and uncomment the below for European dates:
 %\parsedate{@{e['date']}} \dueday-\duemonth-\dueyear & % Date
 @{e['description']} & % Description
-@{e['qty']} & % Amount
+@{"%.2f" % float(e['qty'])} & % Amount
 \euro{} @{e['price']} & % Unit price
 \euro{} @{e['amount_net']} & % Amount without tax
 @{str(e['taxtable']['percent_sum'])+'\%' if 'taxtable' in e else '-'} &
