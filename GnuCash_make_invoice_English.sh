@@ -37,7 +37,8 @@ echo File made: "$INVOICES_DIR"/Invoice_"$INVOICE_NUMBER"_"$DATUM".tex
 
 # Make .pdf file
 # Filter all output except errors
-lualatex -shell-escape -file-line-error -synctex=1 -interaction=nonstopmode -output-directory="$INVOICES_DIR" "$INVOICES_DIR"/Invoice_"$INVOICE_NUMBER"_"$DATUM".tex | grep ".*:[0-9]*:.*"
+lualatex -shell-escape -file-line-error -synctex=1 -interaction=nonstopmode -output-directory="$INVOICES_DIR" "$INVOICES_DIR"/Invoice_"$INVOICE_NUMBER"_"$DATUM".tex
+# | grep ".*:[0-9]*:.*"
 
 echo File made: "$INVOICES_DIR"/Invoice_"$INVOICE_NUMBER"_"$DATUM".pdf
 
