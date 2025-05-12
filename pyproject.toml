@@ -1,0 +1,9 @@
+[project]
+name = "template-invoice-from-gnucash"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "gcinvoice>=0.2.5",
+]
