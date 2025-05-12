@@ -13,7 +13,7 @@ echo "Fill in invoice number"
 
 read INVOICE_NUMBER
 
-DATUM=$(date +%d-%m-%Y)
+DATUM=$(date +%Y-%m-%d)
 
 # Check if INVOICE_NUMBER is a number
 case $INVOICE_NUMBER in 
