@@ -31,7 +31,7 @@ GCINVOICETEMPLATE="/location/of/template.tex"
 # Fill in where you want your created invoices to be placed below:
 INVOICES_DIR="/location/of/target/directory/"
 
-create_gcinvoice -g "$GNUCASHDATABASE" -t "$GCINVOICETEMPLATE" -o "$INVOICES_DIR"/Invoice_"$INVOICE_NUMBER"_"$DATUM".tex  $INVOICE_NUMBER
+uv run create_gcinvoice -g "$GNUCASHDATABASE" -t "$GCINVOICETEMPLATE" -o "$INVOICES_DIR"/Invoice_"$INVOICE_NUMBER"_"$DATUM".tex  $INVOICE_NUMBER
 
 echo File made: "$INVOICES_DIR"/Invoice_"$INVOICE_NUMBER"_"$DATUM".tex
 
