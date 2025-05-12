@@ -11,14 +11,14 @@ clear
 
 echo "Fill in invoice number"
 
-read FACTUURNUMMER
+read INVOICE_NUMBER
 
 DATUM=$(date +%d-%m-%Y)
 
-# Check if FACTUURNUMMER is a number
-case $FACTUURNUMMER in 
+# Check if INVOICE_NUMBER is a number
+case $INVOICE_NUMBER in 
     ''|*[!0-9]*) echo "This is not a number. Try again."; exit 1 ;;
-    *) echo "Invoice number: "$FACTUURNUMMER, date: $DATUM ;;
+    *) echo "Invoice number: "$INVOICE_NUMBER, date: $DATUM ;;
 esac
 
 # Fill in the location of your GnuCash-database below:
@@ -28,17 +28,17 @@ GNUCASHDATABASE="/location/of/database.gnucash"
 GCINVOICETEMPLATE="/location/of/template.tex"
 
 # Fill in where you want your created invoices to be placed below:
-FACTURENMAP="/location/of/target/directory/"
+INVOICES_DIR="/location/of/target/directory/"
 
-create_gcinvoice -g "$GNUCASHDATABASE" -t "$GCINVOICETEMPLATE" -o "$FACTURENMAP"/Invoice_"$FACTUURNUMMER"_"$DATUM".tex  $FACTUURNUMMER
+create_gcinvoice -g "$GNUCASHDATABASE" -t "$GCINVOICETEMPLATE" -o "$INVOICES_DIR"/Invoice_"$INVOICE_NUMBER"_"$DATUM".tex  $INVOICE_NUMBER
 
-echo File made: "$FACTURENMAP"/Invoice_"$FACTUURNUMMER"_"$DATUM".tex
+echo File made: "$INVOICES_DIR"/Invoice_"$INVOICE_NUMBER"_"$DATUM".tex
 
 # Make .pdf file
 # Filter all output except errors
-lualatex -shell-escape -file-line-error -synctex=1 -interaction=nonstopmode -output-directory="$FACTURENMAP" "$FACTURENMAP"/Invoice_"$FACTUURNUMMER"_"$DATUM".tex | grep ".*:[0-9]*:.*"
+lualatex -shell-escape -file-line-error -synctex=1 -interaction=nonstopmode -output-directory="$INVOICES_DIR" "$INVOICES_DIR"/Invoice_"$INVOICE_NUMBER"_"$DATUM".tex | grep ".*:[0-9]*:.*"
 
-echo File made: "$FACTURENMAP"/Invoice_"$FACTUURNUMMER"_"$DATUM".pdf
+echo File made: "$INVOICES_DIR"/Invoice_"$INVOICE_NUMBER"_"$DATUM".pdf
 
 # Repress annoying Evince errors
 alias evince='evince 2> >( grep -v "evince.*WARNING" >&2 )'
@@ -48,5 +48,5 @@ read -p "Would you like to open the pdf file? (y/n) " -n 1 -r
 echo    # (optional) move to a new line
 if [[ $REPLY =~ ^[Yy]$ ]]
 then
-    evince "$FACTURENMAP"/Invoice_"$FACTUURNUMMER"_"$DATUM".pdf 2> >( grep -v "evince.*WARNING" >&2 ) # do dangerous stuff
+    evince "$INVOICES_DIR"/Invoice_"$INVOICE_NUMBER"_"$DATUM".pdf 2> >( grep -v "evince.*WARNING" >&2 ) # do dangerous stuff
 fi
