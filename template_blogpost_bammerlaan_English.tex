@@ -142,7 +142,7 @@
 @{e['qty']} & % Amount
 \euro{} @{e['price']} & % Unit price
 \euro{} @{e['amount_net']} & % Amount without tax
-@{e['taxtable']['percent_sum']}\% & % GEBRUIKTE BTW-TARIEF
+@{str(e['taxtable']['percent_sum'])+'\%' if 'taxtable' in e else '-'} &
 \euro{} @{e['amount_taxes']} & % Tax rate
 %@{owner['full_name']} 
 \euro{} @{e['amount_gross']} \\ % Total price with taxes
