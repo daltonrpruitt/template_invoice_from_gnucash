@@ -18,8 +18,8 @@ DATUM=$(date +%Y-%m-%d)
 
 # Check if INVOICE_NUMBER is a number
 case $INVOICE_NUMBER in 
-    ''|*[!0-9]*) echo "This is not a number. Try again."; exit 1 ;;
-    *) echo "Invoice number: "$INVOICE_NUMBER, date: $DATUM ;;
+    CN[0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9]) echo "Invoice number: "$INVOICE_NUMBER, date: $DATUM ;; # Format is 'CN<customer number>-<last two digits of year>-<invoice number for customer this year>'
+    *) echo "${INVOICE_NUMBER} is not a valid invoice ID. Try again."; exit 1  ;;
 esac
 
 # Fill in the location of your GnuCash-database below:
