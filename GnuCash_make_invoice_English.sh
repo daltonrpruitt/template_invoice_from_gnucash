@@ -6,6 +6,7 @@
 # Fill in the location of your GnuCash-database and your template below, as well as where you want your invoices
 # to be placed.
 
+set -e
 
 clear
 
