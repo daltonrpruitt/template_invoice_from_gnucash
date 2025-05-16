@@ -3,3 +3,4 @@
 invoices/
 komavarvalues.dat
 location_of_gnucashdatabase.txt
+*out*.json
