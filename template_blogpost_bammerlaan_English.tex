@@ -23,9 +23,10 @@
 \setmainfont[BoldFont={Roboto-Regular.ttf}]{Roboto-Light.ttf}
 \usepackage{mathastext}
 \usepackage{wallpaper}
+\usepackage{etoolbox}
 
 \LoadLetterOption{DINmtext}
-\KOMAoptions{enlargefirstpage=true,fromalign=right,fromphone=true,fromemail=true,fromurl=true,fromlogo=true,backaddress=false,parskip=half*,firstfoot=true}
+\KOMAoptions{enlargefirstpage=true,fromalign=right,fromphone=true,fromemail=true,fromurl=true,fromlogo=true,backaddress=false,parskip=half*,firstfoot=false}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Set global variables here:
@@ -64,7 +65,7 @@
 \ULCornerWallPaper{1}{achtergrond_facuur.pdf}
 
 % Path to logo
-\setkomavar{fromlogo}{\includegraphics[]{Bas_zang_logo_v6-3_alleen_vierkant.pdf}}
+\setkomavar{fromlogo}{\includegraphics[height=3cm]{invoice_main_logo}}
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -100,10 +101,12 @@
 % Prevent indentation of signature: 
 \renewcommand*{\raggedsignature}{\raggedright}
 
+\providebool{hasdiscount}
+
 
 \begin{document}
-	
-	\begin{letter}{To:\\
+
+    \begin{letter}{To:\\
 			@{owner['full_name']}\\
 %+ for a in owner['address']:
 @{a}\\
@@ -120,33 +123,60 @@
 		
         Please see the breakdown of this invoice below and contact me if you have any questions. 
         
-        If paying by check, please make it out to Copper Key Software Connections or \usekomavar{fromname}.
+        If paying by check, please make it out to \usekomavar{fromname}.
         
         Finally, please pay within 30 days of receipt of this invoice.
 
 		% @{terms['desc']}
 
 
-		\begin{tabular}{
-				l
-				p{10em}
-				D{,}{,}{2}
-				l
-				l
-				D{,}{,}{2}
-				l
-				l
-			}
-			\multicolumn{1}{p{5em}}{\flushleft Date} & % Date
-			\multicolumn{1}{p{10em}}{\flushleft Description} & % Description
-			\multicolumn{1}{p{3em}}{\flushleft Amount} & % Amount
-			\multicolumn{1}{p{3em}}{\flushleft Unit price} & % Unit price
-			\multicolumn{1}{p{5em}}{\flushleft Amount without tax} & % Amount without tax
-			\multicolumn{1}{p{3em}}{\flushleft Sales\\Tax} & % Has sales tax?
-			\multicolumn{1}{p{3em}}{\flushleft Tax\\amount} & % Tax amount
-			\multicolumn{1}{p{5em}}{\flushleft Total price\\with\\taxes}\\ \midrule % Total price with taxes
+
 %+ for e in entries:
-@{e['date']} & % Date
+\ifbool{hasdiscount}
+{}
+{ \setbool{hasdiscount}{@{str(e['discount'] is not None).lower()}} }
+%-
+
+        
+        \ifbool{hasdiscount}
+        {This invoice has a discount!}
+        {This invoice does NOT have a discount!}
+
+        %% TODO: Add optional Discount Column using above boolean!!
+            %% Don't forget the header, table entries, and the footer calculations!
+
+\ifbool{hasdiscount}{
+  \newcommand{\colhead}{Discount}
+  \newcommand{\coldata}[1]{#1}
+  \newcommand{\colspec}{c}
+}{
+  \newcommand{\colhead}{}
+  \newcommand{\coldata}[1]{}
+  \newcommand{\colspec}{@{}}
+}
+
+
+	\begin{adjustwidth}{-4em}{} % Move table slightly left	
+		\begin{tabular}{
+				l % Date
+				p{13em} % Description
+				D{,}{,}{2} % Amount
+				l % Unit price
+				l % Amount without tax
+				l % Tax rate
+				l % Tax amount
+				l % Total price with taxes
+			}
+			\multicolumn{1}{p{2.5em}}{\flushleft Date} & % Date
+			\multicolumn{1}{p{13em}}{\flushleft Description} & % Description
+			\multicolumn{1}{p{3em}}{\flushleft Qty} & % Amount
+			\multicolumn{1}{p{3em}}{\flushleft Unit price} & % Unit price
+			\multicolumn{1}{p{5em}}{\flushleft Subtotal} & % Amount without tax
+			\multicolumn{1}{p{1.5em}}{\flushleft Sales\\Tax} & % Tax rate
+			\multicolumn{1}{p{2em}}{\flushleft Tax\\amount} & % Tax amount
+			\multicolumn{1}{p{5em}}{\flushleft Total}\\ \midrule % Total price with taxes
+%+ for e in entries:
+@{ e['date'].strftime('%m/%d') } & % Date
 % Comment the above and uncomment the below for European dates:
 %\parsedate{@{e['date']}} \dueday-\duemonth-\dueyear & % Date
 @{e['description']} & % Description
@@ -154,7 +184,6 @@
 \$ @{e['price']} & % Unit price
 \$ @{e['amount_net']} & % Amount without tax
 @{'Y' if 'taxtable' in e else 'N'} & % Tax rate
-\$ @{e['amount_taxes']} & 
 @{'\$ ' + str(e['amount_taxes']) if 'taxtable' in e else '-'} &
 %@{owner['full_name']} 
 \$ @{e['amount_gross']} \\ % Total price with taxes
