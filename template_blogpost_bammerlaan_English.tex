@@ -137,7 +137,7 @@
 			\multicolumn{1}{p{3em}}{\flushleft Amount} & % Amount
 			\multicolumn{1}{p{3em}}{\flushleft Unit price} & % Unit price
 			\multicolumn{1}{p{5em}}{\flushleft Amount without tax} & % Amount without tax
-			\multicolumn{1}{p{3em}}{\flushleft Tax\\rate} & % Tax rate
+			\multicolumn{1}{p{3em}}{\flushleft Sales\\Tax} & % Has sales tax?
 			\multicolumn{1}{p{3em}}{\flushleft Tax\\amount} & % Tax amount
 			\multicolumn{1}{p{5em}}{\flushleft Total price\\with\\taxes}\\ \midrule % Total price with taxes
 %+ for e in entries:
@@ -148,7 +148,7 @@
 @{"%.2f" % float(e['qty'])} & % Amount
 \$ @{e['price']} & % Unit price
 \$ @{e['amount_net']} & % Amount without tax
-@{str(e['taxtable']['percent_sum'])+'\%' if 'taxtable' in e else '-'} & % Tax rate
+@{'Y' if 'taxtable' in e else 'N'} & % Tax rate
 \$ @{e['amount_taxes']} & 
 @{'\$ ' + str(e['amount_taxes']) if 'taxtable' in e else '-'} &
 %@{owner['full_name']} 
