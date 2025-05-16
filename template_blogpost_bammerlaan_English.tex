@@ -111,11 +111,17 @@
 		\setkomavar{subject}{Invoice}		
 		\setkomavar{invoice}[Invoice number]{@{id}}
 		
-		\opening{Dear sir/madam,}
+		\opening{Dear @{owner['full_name'].split(' ')},}
 		
-		@{terms['desc']}
-			
-	\begin{adjustwidth}{-2em}{} % Move table slightly left	
+        Please see the breakdown of this invoice below and contact me if you have any questions. 
+        
+        If paying by check, please make it out to Copper Key Software Connections or \usekomavar{fromname}.
+        
+        Finally, please pay within 30 days of receipt of this invoice.
+
+		% @{terms['desc']}
+
+
 		\begin{tabular}{
 				l
 				p{10em}
