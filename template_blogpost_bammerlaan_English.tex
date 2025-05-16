@@ -146,22 +146,23 @@
 %\parsedate{@{e['date']}} \dueday-\duemonth-\dueyear & % Date
 @{e['description']} & % Description
 @{"%.2f" % float(e['qty'])} & % Amount
-\euro{} @{e['price']} & % Unit price
-\euro{} @{e['amount_net']} & % Amount without tax
-@{str(e['taxtable']['percent_sum'])+'\%' if 'taxtable' in e else '-'} &
-\euro{} @{e['amount_taxes']} & % Tax rate
+\$ @{e['price']} & % Unit price
+\$ @{e['amount_net']} & % Amount without tax
+@{str(e['taxtable']['percent_sum'])+'\%' if 'taxtable' in e else '-'} & % Tax rate
+\$ @{e['amount_taxes']} & 
+@{'\$ ' + str(e['amount_taxes']) if 'taxtable' in e else '-'} &
 %@{owner['full_name']} 
-\euro{} @{e['amount_gross']} \\ % Total price with taxes
+\$ @{e['amount_gross']} \\ % Total price with taxes
 %-
 			\midrule
-			&	Sub-total	& &	 & \euro{} @{amount_net}	&       &  \euro{} @{amount_taxes}     &	\euro{} @{amount_gross}\\ \cmidrule{8-8}
-%			&	+ BTW &	&  &     &   &    &	\euro{} @{amount_taxes} \\ \cmidrule{8-8}
-			&	\large\textbf{Amount due} &		&  &     &    &   &	\textbf{\scalebox{1.2}{\euro{} @{amount_gross}}} \\
+			&	Sub-total	& &	 & \$ @{amount_net}	&       &  \$ @{amount_taxes}     &	\$ @{amount_gross}\\ \cmidrule{8-8}
+%			&	+ BTW &	&  &     &   &    &	\$ @{amount_taxes} \\ \cmidrule{8-8}
+			&	\large\textbf{Amount due} &		&  &     &    &   &	\textbf{\scalebox{1.2}{\$ @{amount_gross}}} \\
 
 % If discount:			
 			
-%			&	\multicolumn{2}{l}{Extra korting} &  & &   &   &	\euro{} @{cformat(Decimal('0.1') * amount_net_)} \\ \cmidrule{8-8}
-%			&	\textbf{Totaal te voldoen met aftrek van korting} &  & &   &   &	& \euro{} @{cformat(amount_gross_ - Decimal('0.1') * amount_net_)}
+			% &	\multicolumn{2}{l}{Discount} &  & &   &   &	\$ @{cformat(Decimal('0.1') * amount_net_)} \\ \cmidrule{8-8}
+			% &	\textbf{Total minus discount} &  & &   &   &	& \$ @{cformat(amount_gross_ - Decimal('0.1') * amount_net_)}
 		\end{tabular}
 	\end{adjustwidth}				
 		\closing{Yours sincerely,}
