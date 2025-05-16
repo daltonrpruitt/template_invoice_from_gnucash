@@ -23,7 +23,7 @@ case $INVOICE_NUMBER in
 esac
 
 # Fill in the location of your GnuCash-database below:
-GNUCASHDATABASE="/location/of/database.gnucash"
+GNUCASHDATABASE=$(cat location_of_gnucashdatabase.txt)
 
 # Fill in the location of your template below:
 GCINVOICETEMPLATE="/location/of/template.tex"
