@@ -26,7 +26,7 @@ esac
 GNUCASHDATABASE=$(cat location_of_gnucashdatabase.txt)
 
 # Fill in the location of your template below:
-GCINVOICETEMPLATE="/location/of/template.tex"
+GCINVOICETEMPLATE="./template_invoice.tex"
 
 # Fill in where you want your created invoices to be placed below:
 INVOICES_DIR="invoices"
