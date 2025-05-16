@@ -31,24 +31,29 @@
 % Set global variables here:
 
 % (Company) Name
-\setkomavar{fromname}{Firstname Lastname, occupation}
+% \setkomavar{title}{Invoice}
+\usepackage{datatool}
+\DTLsetseparator{ = }
+\DTLloaddb[noheader, keys={key,val}]{komavarvalues}{komavarvalues.dat}
+\newcommand{\komavarfromfile}[1]{\DTLfetch{komavarvalues}{key}{#1}{val}}
+
+
+\setkomavar{fromname}{\komavarfromfile{fromname}}
 % Address
-\setkomavar{fromaddress}{%
-	Streetname 1\\
-	1234 AB City Name
-}
+\setkomavar{fromaddress}{\komavarfromfile{fromaddress}}
+
 % Phone number
-\setkomavar{fromphone}{06 123 456 78}
+\setkomavar{fromphone}{\komavarfromfile{fromphone}}
 % E-mail address
-\setkomavar{fromemail}{test@test.nl}
+\setkomavar{fromemail}{\komavarfromfile{fromemail}}
 % Bank account number
-\setkomavar{frombank}{NL12 TEST 1234 5678 90}
+% \setkomavar{frombank}{NL12 TEST 1234 5678 90}
 % Website
-\setkomavar{fromurl}{http://www.bammerlaan.nl}
+\setkomavar{fromurl}{\komavarfromfile{fromurl}}
 % Chamber of commerce number
-\newcommand{\KVKNummer}{12345678}
+% \newcommand{\KVKNummer}{12345678}
 % VAT number
-\newcommand{\BTWNummer}{NL123456789A01}
+% \newcommand{\BTWNummer}{NL123456789A01}
 
 %%%%%%%% Files %%%%%%%%
 
