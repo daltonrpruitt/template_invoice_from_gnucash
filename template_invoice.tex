@@ -172,9 +172,6 @@
 				l % Total price with taxes
   }
 }
-
-\renewcommand{\arraystretch}{1.4}
-
 	\begin{adjustwidth}{-4em}{} % Move table slightly left	
 		\expandafter\tabular\expandafter{\colspec}
 			\multicolumn{1}{p{2.5em}}{\flushleft Date} & % Date
@@ -195,7 +192,7 @@
 @{ e['date'].strftime('%m/%d') } & % Date
 % Comment the above and uncomment the below for European dates:
 %\parsedate{@{e['date']}} \dueday-\duemonth-\dueyear & % Date
-@{e['description']} & % Description
+@{e['description'] if '(' not in e['description'] else "\\newline(".join(e['description'].split("("))} & % Description
 
 % This line may have weird syntax highlighting, since it is trying to abide by both Python's syntax
 % and whatever processing rules are in gcinvoice... 
