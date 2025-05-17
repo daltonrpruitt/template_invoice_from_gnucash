@@ -149,13 +149,13 @@
             %% Don't forget the header, table entries, and the footer calculations!
 
 \ifbool{hasdiscount}{
-  \newcommand{\colhead}{Discount}
-  \newcommand{\coldata}[1]{#1}
-  \newcommand{\colspec}{c}
+  \newcommand{\discountcolhead}{Discount}
+  \newcommand{\discountcoldata}[1]{#1}
+  \newcommand{\discountcolspec}{l}
 }{
-  \newcommand{\colhead}{}
-  \newcommand{\coldata}[1]{}
-  \newcommand{\colspec}{@{}}
+  \newcommand{\discountcolhead}{}
+  \newcommand{\discountcoldata}[1]{}
+  \newcommand{\discountcolspec}{@{}}
 }
 
 
@@ -166,6 +166,7 @@
 				D{,}{,}{2} % Amount
 				l % Unit price
 				l % Amount without tax
+                \discountcolspec % Pre-tax Discount
 				l % Tax rate
 				l % Tax amount
 				l % Total price with taxes
@@ -174,10 +175,12 @@
 			\multicolumn{1}{p{13em}}{\flushleft Description} & % Description
 			\multicolumn{1}{p{3em}}{\flushleft Qty} & % Amount
 			\multicolumn{1}{p{3em}}{\flushleft Unit price} & % Unit price
-			\multicolumn{1}{p{5em}}{\flushleft Subtotal} & % Amount without tax
+			\multicolumn{1}{p{4em}}{\flushleft Subtotal} & % Amount without tax
+			\multicolumn{1}{p{4em}}{\flushleft \discountcolhead} & % Pre-tax Discount
+
 			\multicolumn{1}{p{1.5em}}{\flushleft Sales\\Tax} & % Tax rate
 			\multicolumn{1}{p{2em}}{\flushleft Tax\\amount} & % Tax amount
-			\multicolumn{1}{p{5em}}{\flushleft Total}\\ \midrule % Total price with taxes
+			\multicolumn{1}{p{4em}}{\flushleft Total}\\ \midrule % Total price with taxes
 %+ for e in entries:
 @{ e['date'].strftime('%m/%d') } & % Date
 % Comment the above and uncomment the below for European dates:
@@ -186,6 +189,12 @@
 @{"%.2f" % float(e['qty'])} & % Amount
 \$ @{e['price']} & % Unit price
 \$ @{e['amount_net']} & % Amount without tax
+
+% Pre-tax Discount
+\ifbool{hasdiscount}
+{ \$ @{str(round(float(e['amount_discount']),2))} & }
+{}
+
 @{'Y' if 'taxtable' in e else 'N'} & % Tax rate
 @{'\$ ' + str(e['amount_taxes']) if 'taxtable' in e else '-'} &
 %@{owner['full_name']} 
