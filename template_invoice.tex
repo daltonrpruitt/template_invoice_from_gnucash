@@ -146,33 +146,45 @@
 \ifbool{hasdiscount}{
   \newcommand{\discountcolhead}{Discount}
   \newcommand{\discountcoldata}[1]{#1}
-  \newcommand{\discountcolspec}{l}
+  \newcommand{\colspec}{
+                l % Date
+				p{15em} % Description
+				D{,}{,}{2} % Amount
+				l % Unit price
+				l % Amount without tax
+                l % Pre-tax Discount
+				l % Tax rate
+				l % Tax amount
+				l % Total price with taxes
+  }
 }{
   \newcommand{\discountcolhead}{}
   \newcommand{\discountcoldata}[1]{}
-  \newcommand{\discountcolspec}{@{}}
-}
-
-
-	\begin{adjustwidth}{-4em}{} % Move table slightly left	
-		\begin{tabular}{
-				l % Date
+  \newcommand{\colspec}{
+                l % Date
 				p{13em} % Description
 				D{,}{,}{2} % Amount
 				l % Unit price
 				l % Amount without tax
-                \discountcolspec % Pre-tax Discount
+                @{} % Hidden
 				l % Tax rate
 				l % Tax amount
 				l % Total price with taxes
-			}
+  }
+}
+	\begin{adjustwidth}{-4em}{} % Move table slightly left	
+		\expandafter\tabular\expandafter{\colspec}
 			\multicolumn{1}{p{2.5em}}{\flushleft Date} & % Date
-			\multicolumn{1}{p{13em}}{\flushleft Description} & % Description
+			\multicolumn{1}{p{14em}}{\flushleft Description} & % Description
 			\multicolumn{1}{p{3em}}{\flushleft Qty} & % Amount
 			\multicolumn{1}{p{3em}}{\flushleft Unit price} & % Unit price
 			\multicolumn{1}{p{4em}}{\flushleft Subtotal} & % Amount without tax
-			\multicolumn{1}{p{4em}}{\flushleft \discountcolhead} & % Pre-tax Discount
-
+            \ifbool{hasdiscount}{
+                \multicolumn{1}{p{4em}}{\flushleft \discountcolhead} & % Pre-tax Discount
+                % I think have to do this weird boolean finagling here due to the use of multicolumn ¯\_(ツ)_/¯
+            }
+            {
+            }
 			\multicolumn{1}{p{1.5em}}{\flushleft Sales\\Tax} & % Tax rate
 			\multicolumn{1}{p{2em}}{\flushleft Tax\\amount} & % Tax amount
 			\multicolumn{1}{p{4em}}{\flushleft Total}\\ \midrule % Total price with taxes
@@ -210,7 +222,7 @@
 			
 			% &	\multicolumn{2}{l}{Discount} &  & &   &   &	\$ @{cformat(Decimal('0.1') * amount_net_)} \\ \cmidrule{8-8}
 			% &	\textbf{Total minus discount} &  & &   &   &	& \$ @{cformat(amount_gross_ - Decimal('0.1') * amount_net_)}
-		\end{tabular}
+		\endtabular
 	\end{adjustwidth}				
 		\closing{Yours sincerely,}
 	\end{letter}
