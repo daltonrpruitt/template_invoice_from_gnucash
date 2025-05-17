@@ -140,11 +140,6 @@
 { \setbool{hasdiscount}{@{str(e['discount'] is not None).lower()}} }
 %-
 
-        
-        \ifbool{hasdiscount}
-        {This invoice has a discount!}
-        {This invoice does NOT have a discount!}
-
         %% TODO: Add optional Discount Column using above boolean!!
             %% Don't forget the header, table entries, and the footer calculations!
 
