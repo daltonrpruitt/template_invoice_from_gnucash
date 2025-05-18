@@ -202,7 +202,7 @@
 @{"%.2f" % float(e['qty'])} & % Number of Units
 
 \$ @{e['price']} & % Unit price
-\$ @{e['amount_net']} & % Amount without tax
+\$ @{_currencyformatting(float(e['amount_net']) + float(e['amount_discount']),precision=2)} & % Amount without tax and before discount
 
 % Pre-tax Discount
 \ifbool{hasdiscount}
