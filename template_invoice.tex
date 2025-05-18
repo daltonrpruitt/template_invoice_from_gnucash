@@ -173,6 +173,9 @@
 				l % Total price with taxes
   }
 }
+
+\renewcommand{\arraystretch}{1.4}
+
 	\begin{adjustwidth}{-4em}{} % Move table slightly left	
 		\expandafter\tabular\expandafter{\colspec}
 			\multicolumn{1}{p{2.5em}}{\flushleft Date} & % Date
@@ -206,16 +209,16 @@
 
 % Pre-tax Discount
 \ifbool{hasdiscount}
-{ \$ @{str(round(float(e['amount_discount']),2))} & }
+{ \$ ( @{e['amount_discount']} ) & }
 {}
 
-@{'Y' if 'taxtable' in e else 'N'} & % Tax rate
+% @{'Y' if 'taxtable' in e else 'N'} & % Tax rate
 @{'\$ ' + str(e['amount_taxes']) if 'taxtable' in e else '-'} &
 %@{owner['full_name']} 
 \$ @{e['amount_gross']} \\ % Total price with taxes
 %-
 			\midrule
-			&	Sub-total	& &	 & \$ @{amount_net}	&       &  \$ @{amount_taxes}     &	\$ @{amount_gross}\\ \cmidrule{8-8}
+            &	Sub-total	& &	 & \$ @{_currencyformatting(float(amount_net)/0.85,precision=2)}	& \$ (@{_currencyformatting(float(amount_net)/0.85 * 0.15,precision=2)} )       &  \$ @{amount_taxes}     &	\$ @{amount_gross}\\ \cmidrule{8-8}
 %			&	+ BTW &	&  &     &   &    &	\$ @{amount_taxes} \\ \cmidrule{8-8}
 			&	\large\textbf{Amount due} &		&  &     &    &   &	\textbf{\scalebox{1.2}{\$ @{amount_gross}}} \\
 
